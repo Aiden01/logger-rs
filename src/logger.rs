@@ -1,10 +1,11 @@
-use chrono::offset::Utc;
 use std::default::Default;
 use std::fmt;
 use std::fs::OpenOptions;
 use std::io;
 use std::io::Write;
 use std::path::Path;
+
+use crate::style::Style;
 
 /// Level of importance of the message
 #[derive(Clone, Copy, PartialEq)]
@@ -31,39 +32,6 @@ impl fmt::Display for Importance {
 /// You can make your own bridge by implementing this trait.
 pub trait Bridge<T = ()> {
     fn log(&self, msg: &str) -> T;
-}
-
-/// Trait used to style the logs
-pub trait Style {
-    fn format(&self, imp: Importance, msg: &str) -> String;
-}
-
-/// Default style used for the logs
-pub struct DefaultStyle {
-    date: bool,
-}
-
-impl DefaultStyle {
-    pub fn date(self, date: bool) -> Self {
-        DefaultStyle { date }
-    }
-}
-
-impl Default for DefaultStyle {
-    fn default() -> Self {
-        DefaultStyle { date: true }
-    }
-}
-
-impl Style for DefaultStyle {
-    fn format(&self, imp: Importance, msg: &str) -> String {
-        if self.date {
-            let today = Utc::today();
-            format!("{} [{}]: {}", imp, today, msg)
-        } else {
-            format!("{}: {}", imp, msg)
-        }
-    }
 }
 
 /// Main Logger. Each logger has its own bridge where the messages are transferred.

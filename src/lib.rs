@@ -1,4 +1,5 @@
 pub mod logger;
+pub mod style;
 
 #[cfg(test)]
 mod tests {
