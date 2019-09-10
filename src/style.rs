@@ -65,23 +65,31 @@ impl Style for DefaultStyle {
 /// ▶ This is an error messsage.
 pub struct Arrow {
     colored: bool,
+    padding: usize,
 }
 
 impl Default for Arrow {
     fn default() -> Self {
-        Arrow { colored: true }
+        Arrow {
+            colored: true,
+            padding: 5,
+        }
     }
 }
 
 impl Arrow {
     pub fn colored(self, colored: bool) -> Self {
-        Arrow { colored }
+        Arrow { colored, ..self }
+    }
+
+    pub fn padding(self, padding: usize) -> Self {
+        Arrow { padding, ..self }
     }
 }
 
 impl Style for Arrow {
     fn format(&self, imp: Importance, msg: &str) -> String {
-        let log = format!("▶ {}", msg);
+        let log = format!("{:width$}▶ {}", "", msg, width = self.padding);
         if self.colored {
             with_color(imp, &log).to_string()
         } else {
