@@ -7,7 +7,7 @@ pub trait Style {
     fn format(&self, imp: Importance, msg: &str) -> String;
 }
 
-fn with_color(imp: &Importance, msg: &str) -> ColoredString {
+fn with_color(imp: Importance, msg: &str) -> ColoredString {
     match imp {
         Importance::Fail => msg.red(),
         Importance::Warn => msg.yellow(),
@@ -53,7 +53,7 @@ impl Style for DefaultStyle {
         };
 
         if self.colored {
-            with_color(&imp, &log).to_string()
+            with_color(imp, &log).to_string()
         } else {
             log
         }
@@ -83,7 +83,7 @@ impl Style for Arrow {
     fn format(&self, imp: Importance, msg: &str) -> String {
         let log = format!("▶ {}", msg);
         if self.colored {
-            with_color(&imp, &log).to_string()
+            with_color(imp, &log).to_string()
         } else {
             log
         }

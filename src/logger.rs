@@ -5,7 +5,7 @@ use std::io;
 use std::io::Write;
 use std::path::Path;
 
-use crate::style::Style;
+use crate::style::{DefaultStyle, Style};
 
 /// Level of importance of the message
 #[derive(Clone, Copy, PartialEq)]
@@ -35,14 +35,30 @@ pub trait Bridge<T = ()> {
 }
 
 /// Main Logger. Each logger has its own bridge where the messages are transferred.
-pub struct Logger<'a, T> {
-    bridge: &'a dyn Bridge<T>,
-    style: &'a dyn Style,
+pub struct Logger<T> {
+    bridge: Box<dyn Bridge<T>>,
+    style: Box<dyn Style>,
 }
 
-impl<'a, T> Logger<'a, T> {
-    pub fn new(bridge: &'a dyn Bridge<T>, style: &'a dyn Style) -> Self {
-        Logger { bridge, style }
+impl Default for Logger<()> {
+    fn default() -> Self {
+        Logger {
+            style: Box::new(DefaultStyle::default()),
+            bridge: Box::new(Console::default()),
+        }
+    }
+}
+
+impl<T> Logger<T> {
+    pub fn style(self, style: Box<dyn Style>) -> Self {
+        Logger { style, ..self }
+    }
+
+    pub fn bridge<U>(self, bridge: Box<dyn Bridge<U>>) -> Logger<U> {
+        Logger {
+            bridge,
+            style: self.style,
+        }
     }
 
     fn log(&self, imp: Importance, msg: &str) -> T {
