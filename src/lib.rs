@@ -10,3 +10,4 @@
 /// ```
 pub mod logger;
 pub mod style;
+pub use logger::*;
