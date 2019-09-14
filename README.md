@@ -10,3 +10,5 @@ logger.success("Hello, world!");
 logger.warn("Hello, world!");
 logger.fail("Hello, world!");
 ```
+
+![demo](https://i.imgur.com/Ex7HAl8.png)
