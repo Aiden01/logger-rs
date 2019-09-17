@@ -55,10 +55,7 @@ impl<T> Logger<T> {
     }
 
     pub fn bridge<U>(self, bridge: Box<dyn Bridge<U>>) -> Logger<U> {
-        Logger {
-            bridge,
-            style: self.style,
-        }
+        Logger { bridge, ..self }
     }
 
     fn log(&self, imp: Importance, msg: &str) -> T {
