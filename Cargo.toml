@@ -3,6 +3,10 @@ name = "logger-rs"
 version = "0.1.0"
 authors = ["aiden01 <liangu@protonmail.com>"]
 edition = "2018"
+description = "Logging utilities for Rust"
+repository = "https://github.com/Aiden01/logger-rs"
+homepage = "https://github.com/Aiden01/logger-rs"
+license = "MIT"
 
 [dependencies]
 chrono = "0.4"
